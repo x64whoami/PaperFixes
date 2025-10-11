@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(targets = "net.minecraft.block.BlockBeacon$1")
 public abstract class BlockBeacon$1Mixin implements Runnable {
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;addScheduledTask(Ljava/lang/Runnable;)Lcom/google/common/util/concurrent/ListenableFuture;"), remap = false)
+    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;addScheduledTask(Ljava/lang/Runnable;)Lcom/google/common/util/concurrent/ListenableFuture;"))
     private ListenableFuture<Void> runColorUpdateNow(WorldServer instance, Runnable runnableToSchedule) {
         runnableToSchedule.run();
         return null;

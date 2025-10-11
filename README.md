@@ -8,20 +8,20 @@ This is a performance mod, and bugs and incompatibilities could occur. Please op
 <details>
 <summary>Bugfixes</summary>
   <ul>
-    <li><code>avoidItemMergeForFullStacks</code> - Skips merging checks for full item stacks before bounding box check.</li>
+    <li><code>avoidItemMergeForFullStacks</code> - Skips merging checks for full item stacks before doing bounding box checks.</li>
     <li><code>clearPacketQueue</code> - Clears player packet queue on disconnect to prevent memory leaks.</li>
     <li><code>explosionsIgnoreDeadEntities</code> - Excludes dead entities and untargetable players from explosions.</li>
-    <li><code>fixMc54738</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-54738">MC-54738</a>) - Limits biome weight variable to fix terrain spikes.</li>
-    <li><code>fixMc80966</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-80966">MC-80966</a>) - Ensures empty subchunks send data to clients.</li>
+    <li><code>fixMc54738</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-54738">MC-54738</a>) - Limits a biome weight variable to fix odd spikes that can appear in terrain.</li>
+    <li><code>fixMc80966</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-80966">MC-80966</a>) - Ensures empty subchunks send data to clients, fixes lighting problems.</li>
     <li><code>fixMc98153</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-98153">MC-98153</a>) - Prevents rubber-banding and suffocation in nether portals.</li>
-    <li><code>fixMc133373</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-133373">MC-133373</a>) - Resets NaN attribute values.</li>
-    <li><code>fixShulkerDispenseCrash</code> - Prevents crash when placing non-empty shulker box via dispenser at height limit.</li>
-    <li><code>fixShulkerDupe</code> - Fixes duplication from shulker box tile entity not being removed.</li>
-    <li><code>fixWaterMobSpawnCheck</code> - Ensures water mobs spawn inside water with space.</li>
+    <li><code>fixMc133373</code> (<a href="https://bugs.mojang.com/browse/MC/issues/MC-133373">MC-133373</a>) - Resets NaN values in attributes to the default specified by the attribute.</li>
+    <li><code>fixShulkerDispenseCrash</code> - Prevents a crash when placing a non-empty shulker box via dispenser above height limit.</li>
+    <li><code>fixShulkerDupe</code> - Fixes a duplication exploit from shulker box tile entities not being removed.</li>
+    <li><code>fixWaterMobSpawnCheck</code> - Ensures water mobs spawn inside water with enough space that they won't suffocate.</li>
     <li><code>dontOffloadBeaconColorUpdate</code> - Avoids unnecessary thread hopping for beacon updates.</li>
     <li><code>handleNullTileCrashes</code> - Logs null tile entities instead of causing more problems.</li>
-    <li><code>removeInvalidMobSpawners</code> - Removes broken mob spawners that don't exist.</li>
-    <li><code>sortEnchantments</code> - Sorts enchantments by ID to ensure identical items are treated the same.</li>
+    <li><code>removeInvalidMobSpawners</code> - Removes mob spawner tile entities that don't have a mob spawner block attached to them.</li>
+    <li><code>sortEnchantments</code> - Sorts enchantments by their IDs to ensure identical items are treated the same.</li>
   </ul>
 </details>
 
@@ -46,7 +46,7 @@ This is a performance mod, and bugs and incompatibilities could occur. Please op
     Setting this gamerule to <code>0</code> completely disables spawn chunks.
   </li>
   <li>
-    <code>spawnChunkRadius</code> - Sets the default spawn chunk radius for the above feature. Applies only to new worlds or worlds not yet run with PaperFixes 2.0.0-beta.1 or newer. Values can range from 0 to 32, where 0 disables spawn chunks entirely and 32 gives a 64-chunk diameter.
+    <code>spawnChunkRadius</code> - Sets the default spawn chunk radius for the above feature. Applies only to new worlds or worlds not yet run with PaperFixes 2.0.0-beta.1 or newer. Values can range from 0 to 32, where 0 disables spawn chunks entirely and 32 gives a 65-chunk diameter.
   </li>
   <li>
     <code>improvedTickLoop</code> - Measures time in nanoseconds instead of milliseconds for better accuracy, uses <code>LockSupport.parkNanos</code> for precise sleeps, and adapts sleep time depending on tick length. Runs ticks as fast as possible when the server is more than 2.5 seconds behind, spinning instead of sleeping near the start of the next tick to avoid oversleeping.
@@ -79,7 +79,7 @@ This is a performance mod, and bugs and incompatibilities could occur. Please op
     <code>compactLut</code> - Uses a smaller, faster lookup table for sine and cosine calculations. Thanks to jellysquid3 and ruViolence.
   </li>
   <li>
-    <code>fastChests</code> - Runs chest open/close animations only when needed, instead of every tick.
+    <code>fastChests</code> - Updates chests and checks animations only when needed instead of every tick.
   </li>
   <li>
     <code>smartRegionRead</code> - Reads the entire region file header at once for faster world loading and fewer potential issues.
@@ -94,7 +94,7 @@ This is a performance mod, and bugs and incompatibilities could occur. Please op
     <code>optimizedTaskQueue</code> - Uses a faster queue implementation for scheduled tasks.
   </li>
   <li>
-    <code>pathingChunkCache</code> - Tracks the chunk an entity is moving through with a quick 1D cache. Thanks to jellysquid3 and ruViolence.
+    <code>pathingChunkCache</code> - Tracks the chunk an entity is moving through with a faster 1-dimensional cache. Thanks to jellysquid3 and ruViolence.
   </li>
   <li>
     <code>pathNodeCache</code> - Saves pathing data so the same blocks aren’t recalculated repeatedly. Thanks to jellysquid3 and ruViolence.
@@ -103,7 +103,7 @@ This is a performance mod, and bugs and incompatibilities could occur. Please op
     <code>queueChunkSaving</code> - Saves chunks gradually over time instead of all at once, reducing server pause time during saves.
   </li>
   <li>
-    <code>trimRegionCache</code> - Unloads only the least-used regions instead of all at once, preventing immediate reloading of active regions.
+    <code>trimRegionCache</code> - Unloads only the least-used regions instead of all of them, preventing immediate reloading of active regions and a lag spike.
   </li>
   <li>
     <code>sharedRandomForEntities</code> - Uses a shared random number generator for all entities rather than creating a new one for each.
