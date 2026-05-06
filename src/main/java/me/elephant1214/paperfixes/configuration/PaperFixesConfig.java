@@ -12,14 +12,14 @@ public final class PaperFixesConfig {
     @Config.RequiresMcRestart
     public static Bugfixes bugfixes = new Bugfixes();
     @Config.RequiresMcRestart
-    public static Client client = new Client();
+    public static Client client = isClient() ? new Client() : null;
     @Config.RequiresMcRestart
     public static Features features = new Features();
     @Config.RequiresMcRestart
     public static Performance performance = new Performance();
 
-    public static boolean enableFastBorder() {
-        return features.fastWorldBorder && (MixinEnvironment.getCurrentEnvironment().getSide() != MixinEnvironment.Side.CLIENT || client.fastWorldBorder);
+    public static boolean isClient() {
+        return MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT;
     }
 
     public static class Bugfixes {
@@ -41,7 +41,6 @@ public final class PaperFixesConfig {
 
     public static class Client {
         public boolean cacheLastChunk = true;
-        public boolean fastWorldBorder = false;
     }
 
     public static class Features {
@@ -64,7 +63,6 @@ public final class PaperFixesConfig {
         public boolean smartRegionRead = true;
         public boolean fastEntityDataMap = true;
         public boolean optimizePathfinding = true;
-        public boolean optimizedTaskQueue = true;
         public boolean pathingChunkCache = true;
         public boolean pathNodeCache = true;
         public boolean queueChunkSaving = true;

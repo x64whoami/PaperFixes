@@ -30,7 +30,7 @@ public class PFMixinConfigPlugin implements IMixinConfigPlugin {
         } else if (mixin.contains("fast_chests")) {
             return PaperFixesConfig.performance.fastChests;
         } else if (mixin.contains("fast_border")) {
-            return PaperFixesConfig.enableFastBorder();
+            return PaperFixesConfig.features.fastWorldBorder;
         } else if (mixin.contains("dont_offload_beacon")) {
             return PaperFixesConfig.bugfixes.dontOffloadBeaconColorUpdate;
         } else if (mixin.contains("shulker_dupe")) {
@@ -51,10 +51,8 @@ public class PFMixinConfigPlugin implements IMixinConfigPlugin {
             return PaperFixesConfig.bugfixes.clearPacketQueue;
         } else if (mixin.contains("fast_data_mgr")) {
             return PaperFixesConfig.performance.fastEntityDataMap;
-        } else if (mixin.contains("improved_tick_loop")) {
+        } else if (mixin.contains("server.improved_tick_loop") || (mixin.contains("integrated.improved_tick_loop") && PaperFixesConfig.isClient())) {
             return PaperFixesConfig.features.improvedTickLoop;
-        } else if (mixin.contains("optimize_task_queue")) {
-            return PaperFixesConfig.performance.optimizedTaskQueue;
         } else if (mixin.contains("handle_null_tile_crash")) {
             return PaperFixesConfig.bugfixes.handleNullTileCrashes;
         } else if (mixin.endsWith("TeleporterMixin") || mixin.endsWith("NetHandlerPlayServerInvoker")) {

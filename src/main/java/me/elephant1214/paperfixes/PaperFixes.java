@@ -2,7 +2,6 @@ package me.elephant1214.paperfixes;
 
 import me.elephant1214.paperfixes.configuration.PaperFixesConfig;
 import me.elephant1214.paperfixes.gamerule.SpawnChunkRule;
-import me.elephant1214.paperfixes.manager.FastWorldBorder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public final class PaperFixes {
     public static final String NAME = "PaperFixes";
     public static final String MOD_ID = "paperfixes";
-    public static final String VERSION = "2.0.1";
+    public static final String VERSION = "2.0.2";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
     public PaperFixes() {
@@ -37,10 +36,6 @@ public final class PaperFixes {
     public void preInit(@NotNull FMLPreInitializationEvent event) {
         if (PaperFixesConfig.features.spawnChunkGamerule) {
             MinecraftForge.EVENT_BUS.register(new SpawnChunkRule());
-        }
-
-        if (PaperFixesConfig.enableFastBorder()) {
-            MinecraftForge.EVENT_BUS.register(new FastWorldBorder.Events());
         }
     }
 

@@ -1,5 +1,6 @@
 package me.elephant1214.paperfixes.mixin.common.server.improved_tick_loop;
 
+import io.papermc.paper.CachedSizeConcurrentLinkedQueue;
 import me.elephant1214.paperfixes.PaperFixes;
 import me.elephant1214.paperfixes.configuration.PaperFixesConfig;
 import net.minecraft.command.ICommandSender;
@@ -50,7 +51,7 @@ public abstract class MinecraftServerMixin implements ICommandSender, Runnable, 
     private boolean serverIsRunning;
     @Shadow
     @Final
-    public Queue<FutureTask<?>> futureTaskQueue;
+    public final Queue<FutureTask<?>> futureTaskQueue = new CachedSizeConcurrentLinkedQueue<>();
 
     @Shadow
     public abstract boolean init() throws IOException;
@@ -84,16 +85,14 @@ public abstract class MinecraftServerMixin implements ICommandSender, Runnable, 
      * This is basically to take some of the load off of tick and not have it run the
      * entire queue.
      */
-    @SuppressWarnings("SynchronizeOnNonFinalField")
     @Unique
     private boolean paperFixes$tryRunTasks() {
         if (!PaperFixesConfig.features.runTasksDuringSleep) return false;
 
-        synchronized (this.futureTaskQueue) {
-            if (!this.futureTaskQueue.isEmpty()) {
-                Util.runTask((FutureTask<?>) this.futureTaskQueue.poll(), LOGGER);
-                return true;
-            }
+        final FutureTask<?> task = this.futureTaskQueue.poll();
+        if (task != null) {
+            Util.runTask(task, LOGGER);
+            return true;
         }
 
         return false;
