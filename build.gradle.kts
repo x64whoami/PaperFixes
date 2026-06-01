@@ -9,7 +9,7 @@ plugins {
 val modGroup: String by project
 val modID: String by project
 group = modGroup
-version = "2.0.2"
+version = "2.1.0-SNAPSHOT"
 
 loom {
     runs {

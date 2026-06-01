@@ -1,6 +1,5 @@
 package me.elephant1214.paperfixes.mixin.common.lithium.path_node_cache;
 
-import me.elephant1214.paperfixes.PaperFixes;
 import net.caffeinemc.lithium.WorldHelper;
 import net.caffeinemc.lithium.ai.pathing.ChunkAccessHelper;
 import net.caffeinemc.lithium.ai.pathing.PathNodeCache;
@@ -67,7 +66,7 @@ public abstract class WalkNodeProcessorMixin {
                         section = chunk.getBlockStorageArray()[y >> 4];
                     }
                 } else {
-                    PaperFixes.LOGGER.error("w h a t");
+                    throw new RuntimeException("Found unknown IBlockAccess type: " + blockAccess.getClass().getName());
                 }
             }
 
